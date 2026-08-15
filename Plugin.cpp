@@ -86,29 +86,53 @@ const char* GetLocalPlayerName()
 		case rakhook::samp_ver::v037r1:
 		{
 			SAMPAPI_EXPORT sampapi::v037r1::CNetGame* pNetGame = sampapi::v037r1::RefNetGame();
-			if (pNetGame && pNetGame->m_pPools)
-			    plrName = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_pObject->m_szName;
+			if (pNetGame && pNetGame->m_pPools) {
+			    plrName = pNetGame->m_pPools->m_pPlayer->GetLocalPlayerName();
+			    if (strlen(plrName) == 0) {
+                    unsigned short localId = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_nId;
+                    if (pNetGame->m_pPools->m_pPlayer->IsConnected(localId))
+                        return pNetGame->m_pPools->m_pPlayer->GetName(localId);
+				}
+		    }
 			break;
 		}
 		case rakhook::samp_ver::v037r31:
 		{
 			SAMPAPI_EXPORT sampapi::v037r3::CNetGame* pNetGame = sampapi::v037r3::RefNetGame();
-			if (pNetGame && pNetGame->m_pPools)
-			    plrName = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_pObject->m_szName;
+			if (pNetGame && pNetGame->m_pPools) {
+			    plrName = pNetGame->m_pPools->m_pPlayer->GetLocalPlayerName();
+			    if (strlen(plrName) == 0) {
+                    unsigned short localId = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_nId;
+                    if (pNetGame->m_pPools->m_pPlayer->IsConnected(localId))
+                        return pNetGame->m_pPools->m_pPlayer->GetName(localId);
+				}
+		    }
 			break;
 		}
 		case rakhook::samp_ver::v037r5:
 		{
 			SAMPAPI_EXPORT sampapi::v037r5::CNetGame* pNetGame = sampapi::v037r5::RefNetGame();
-			if (pNetGame && pNetGame->m_pPools)
-			    plrName = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_pObject->m_szName;
+			if (pNetGame && pNetGame->m_pPools) {
+			    plrName = pNetGame->m_pPools->m_pPlayer->GetLocalPlayerName();
+			    if (strlen(plrName) == 0) {
+                    unsigned short localId = pNetGame->m_pPools->m_pPlayer->m_localInfo.m_nId;
+                    if (pNetGame->m_pPools->m_pPlayer->IsConnected(localId))
+                        return pNetGame->m_pPools->m_pPlayer->GetName(localId);
+				}
+		    }
 			break;
 		}
 		case rakhook::samp_ver::v03dlr1:
 		{
 			SAMPAPI_EXPORT sampapi::v03dl::CNetGame* pNetGame = sampapi::v03dl::RefNetGame();
-			if (pNetGame && pNetGame->m_pPools)
-			    plrName = pNetGame->m_pPools->m_pPlayer->pLocalPlayer->m_szName;
+			if (pNetGame && pNetGame->m_pPools) {
+			    plrName = pNetGame->m_pPools->m_pPlayer->GetLocalPlayerName();
+			    if (strlen(plrName) == 0) {
+                    unsigned short localId = pNetGame->m_pPools->m_pPlayer->m_nLocalPlayerId;
+                    if (pNetGame->m_pPools->m_pPlayer->IsConnected(localId))
+                        return pNetGame->m_pPools->m_pPlayer->GetName(localId);
+				}
+		    }
 			break;
 		}
 		default:{
