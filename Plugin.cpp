@@ -269,7 +269,6 @@ void InitializeHooks() {
 	};
 }
 
-static bool threadSpawned = false;
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	switch (dwReason) {
@@ -287,6 +286,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 			else
 				pluginReady = false;
 
+			static bool threadSpawned = false;
 			if (pluginReady && !threadSpawned) {
                 threadSpawned = true;
 			    std::thread(InitializeHooks).detach();
