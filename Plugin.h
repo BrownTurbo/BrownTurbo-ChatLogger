@@ -34,7 +34,6 @@ std::string WStringToString(const std::wstring& wstr);
 std::string GetDocumentsFolderPath();
 bool CreateLogsFolderIfMissing();
 void WriteToLogFile(const char *path, const char *fmt, ...);
-bool SleepWithInterrupt(std::chrono::milliseconds ms);
 
 const char* GetLocalPlayerName();
 std::string GetServerAddressPort();
