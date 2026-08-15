@@ -192,26 +192,16 @@ bool IsGameInitialized()
 bool ASIinitialized = false;
 bool pluginReady = false;
 std::atomic<bool> shuttingDown{false};
-std::mutex shutdownMutex;
-std::condition_variable shutdownCV;
 bool localPlayerJoined = false;
-
-bool SleepWithInterrupt(std::chrono::milliseconds ms) {
-    std::unique_lock<std::mutex> lock(shutdownMutex);
-    return !shutdownCV.wait_for(lock, ms, [] { return shuttingDown.load(); });
-}
 
 void InitializeHooks() {
 	while (GetModuleHandleA("samp.dll") == nullptr) {
 	  if (shuttingDown.load(std::memory_order_relaxed))
 		  return;
-      if (SleepWithInterrupt(std::chrono::milliseconds(100)))
-          return;
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 	while (!ASIinitialized) {
-		if (SleepWithInterrupt(std::chrono::milliseconds(100)))
-			return;
 		if (shuttingDown.load(std::memory_order_relaxed))
 			return;
 
@@ -223,6 +213,7 @@ void InitializeHooks() {
 				}
 			}
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 	rakhook::on_send_rpc += [](int &id, RakNet::BitStream *bs, PacketPriority &priority, PacketReliability &reliability, char &ord_channel, bool &sh_timestamp) -> bool {
@@ -304,7 +295,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 		}
         case DLL_PROCESS_DETACH: {
 			shuttingDown.store(true, std::memory_order_relaxed);
-            shutdownCV.notify_all();
 
 			rakhook::on_receive_rpc.clear();
 			rakhook::on_send_rpc.clear();
