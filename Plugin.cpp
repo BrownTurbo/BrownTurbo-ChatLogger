@@ -236,7 +236,7 @@ void InitializeHooks() {
 	  bs->Read(color);
 	  std::string msg = read_with_size<unsigned int>(bs);
 
-	  WriteToLogFile(logsPath, "[IN][color=%08X]-> %s", color, msg.c_str());
+	  WriteToLogFile(logsPath, "[IN][color=0x%08X]-> %s", color, msg.c_str());
 
 	  bs->ResetReadPointer();
 	  return true;
